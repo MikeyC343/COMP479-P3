@@ -46,6 +46,7 @@ ROBOTSTXT_OBEY = True
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
+# SPIDER_MIDDLEWARES = { 'project3.middlewares.IgnoreVisitedItems': 543 }
 #SPIDER_MIDDLEWARES = {
 #    'project3.middlewares.MyCustomSpiderMiddleware': 543,
 #}

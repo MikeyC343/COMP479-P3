@@ -4,7 +4,7 @@ import glob
 def mergeBlocks():
 	#open output file
 	print "In mergeBlocks"
-	with open('./biology/index.json', 'a+') as theFile:
+	with open('./index/index.json', 'a+') as theFile:
 		#initialize empty dict
 		dictionary = {}
 		#iterates through all blocks

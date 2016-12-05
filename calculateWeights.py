@@ -3,6 +3,8 @@ import re
 from math import log
 from collections import Counter
 import glob
+import os, os.path
+import json
 
 
 # reutersFunctions = reuters.ReutersCorpus(); #for testing
@@ -13,13 +15,25 @@ import glob
 k = 1.5
 b = 0.75
 
+corpus = './project3/project3/corpus'
+docCount = sum([len(files) for r, d, files in os.walk(corpus)])
+#print docCount
 
-#calculate weights
+#calculate tf-idf weights - dictionary = {key:[[doc, termfreq, tf-idf], tf-idf]}
 def calculate():
-    with open('./index/biology.json', 'a+') as theFile:
+    with open('./index/index.json', 'r') as theFile:
         dictionnary = json.load(theFile)
         for key, value in dictionnary.iteritems():
-
+            postingsList = []
+            tfidf = 0
+            for v in value:
+                postingsList.append(v[0])
+                tfidf += v[1] * idf(postingsList, docCount)
+            #value.append(tfidf)
+            print "========"
+            print key
+            print tfidf
+            
 
 #return the bm25 score
 #q = query term 

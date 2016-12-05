@@ -18,7 +18,7 @@ def preProcess(memorysize):
 	
 	indexNumber = 00
 
-	for filename in glob.glob('project3/project3/corpus/biology/*.json'):
+	for filename in glob.glob('project3/project3/corpus/science-college/*.json'):
 		with open(filename,'r') as theFile:
 			intermediate = json.load(theFile)
 			for key, value in intermediate.iteritems():
@@ -81,7 +81,7 @@ def preProcess(memorysize):
 					else:
 						formatedIndexNumber = str(indexNumber)
 
-					with open('index/biology-' + formatedIndexNumber + '.json', 'w') as theFile:
+					with open('index/science-college-' + formatedIndexNumber + '.json', 'w') as theFile:
 						indexNumber += 1
 						json.dump(postingsList, theFile)
 					postingsList = {}

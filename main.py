@@ -5,9 +5,9 @@ from calculateWeights import calculate
 
 
 def indexGeneration(memorysize):
-	preProcess(memorysize)
+	#preProcess(memorysize)
 
-	mergeBlocks()
+	#mergeBlocks()
 
 	calculate()
 

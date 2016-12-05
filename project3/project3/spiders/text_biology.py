@@ -4,6 +4,7 @@ sys.setdefaultencoding('utf-8')
 import scrapy
 from scrapy.spiders import Rule
 from scrapy.linkextractors import LinkExtractor
+from scrapy.exceptions import CloseSpider
 try:
     import json
 except ImportError:
@@ -17,13 +18,17 @@ class QuotesSpider(scrapy.Spider):
     name = "biology"
     allowed_domains = ['concordia.ca']
 
+
+    def __init__(self):
+        self.urlCounter = 0
+
     def start_requests(self):
         urls = [
-            'http://www.concordia.ca/artsci/biology.html'
-            # 'http://www.concordia.ca/artsci/chemistry.html',
+            # 'http://www.concordia.ca/artsci/biology.html'
+            'http://www.concordia.ca/artsci/chemistry.html'
             # 'http://www.concordia.ca/artsci/exercise-science.html',
             # 'http://www.concordia.ca/artsci/geography-planning-environment.html',
-            # 'http://www.concordia.ca/artsci/math-stats.html',
+            # 'http://www.concordia.ca/artsci/math-stats.html'
             # 'http://www.concordia.ca/artsci/physics.html',
             # 'http://www.concordia.ca/artsci/psychology.html',
             # 'http://www.concordia.ca/artsci/science-college.html'
@@ -34,30 +39,42 @@ class QuotesSpider(scrapy.Spider):
 
     def parse(self, response):
         page = response.url.replace('.html','').replace('/', '-').replace(':', '')
-        filename = 'biology-%s.json' % page
-        with open('project3/corpus/' + filename, 'wb') as theFile:
-            postingsList = {}
-            postingsList[str(response.url)] = []
-            postingsList[str(response.url)].extend((
-                response.xpath('//p/text()').extract(),
-                response.xpath('//span/text()').extract(),
-                response.xpath('//span/text()').extract(),
-                response.xpath('//a/text()').extract(),
-                response.xpath('//h1/text()').extract(),
-                response.xpath('//h2/text()').extract(),
-                response.xpath('//h3/text()').extract(),
-                response.xpath('//h4/text()').extract(),
-                response.xpath('//h5/text()').extract(),
-                response.xpath('//h6/text()').extract()))
-            json.dump(postingsList, theFile)
-        for url in response.xpath('//a[contains(@href, "biology")]/@href').extract():
-            url = response.urljoin(url)
-            yield scrapy.Request(url, callback=self.parse)
+        filename = '%s.json' % page
 
-    # def removeRN(self, tag ,response):
-    #     clean = response.xpath('//' + tag + '/text()').extract()
-    #     for obj in clean:
-    #         preClean = obj.split('\r\n')
-    #         preClean[0] = preClean[0].strip()
-    #         clean.append(preClean[0])
-    #     return clean
+        self.urlCounter += 1
+        
+        if self.urlCounter < 100:
+            with open('project3/corpus/chemistry/' + filename, 'wb') as theFile:
+                postingsList = {}
+                postingsList[str(response.url)] = {}
+                postingsList[str(response.url)] = (
+                    response.xpath('//p/text()').extract(),
+                    response.xpath('//span/text()').extract(),
+                    response.xpath('//span/text()').extract(),
+                    response.xpath('//a/text()').extract(),
+                    response.xpath('//h1/text()').extract(),
+                    response.xpath('//h2/text()').extract(),
+                    response.xpath('//h3/text()').extract(),
+                    response.xpath('//h4/text()').extract(),
+                    response.xpath('//h5/text()').extract(),
+                    response.xpath('//h6/text()').extract())
+                json.dump(postingsList, theFile)
+        else:
+            raise CloseSpider('At the upper limit')
+
+        for url in response.xpath('//a[contains(@href, "chemistry")]/@href').extract():
+            if url.endswith('.html'):
+                url = response.urljoin(url)
+                yield scrapy.Request(url, callback=self.parse)
+            else:
+                continue
+
+
+
+
+
+
+
+
+
+

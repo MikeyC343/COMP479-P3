@@ -27,6 +27,26 @@ def preProcess(memorysize):
 				for key, value in intermediate.iteritems():
 					dictionary[key] = value
 
+<<<<<<< HEAD
+	for key, value in dictionary.iteritems():
+		if key in finalDictionnary:
+			continue
+		else:
+			finalDictionnary[key] = value
+=======
+	finalDictionnary = dict()
+>>>>>>> d678f813a7d84f965262091d276c74c99d75bf05
+
+	categories = ['biology', 'chemistry', 'exercise-science', 'geography-planning-environment', 'math-stats', 'physics','psychology','science-college', 'mystery']
+	for category in categories:
+		for filename in glob.glob('project3/project3/corpus/' + category + '/*.json'):
+			with open(filename,'r') as theFile:
+				intermediate = json.load(theFile)
+				for key, value in intermediate.iteritems():
+					dictionary[key] = value
+
+<<<<<<< HEAD
+=======
 	for key, value in dictionary.iteritems():
 		if key in finalDictionnary:
 			continue
@@ -35,6 +55,7 @@ def preProcess(memorysize):
 
 	nonWordsRegex = re.compile('[^a-zA-Z0-9]+')
 
+>>>>>>> d678f813a7d84f965262091d276c74c99d75bf05
 	for key, value in finalDictionnary.iteritems():
 		for values in value:
 			for sentences in values:

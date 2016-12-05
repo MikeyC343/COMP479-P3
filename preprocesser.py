@@ -18,15 +18,25 @@ def preProcess(memorysize):
 	
 	indexNumber = 00
 
-	for filename in glob.glob('project3/project3/corpus/science-college/*.json'):
-		with open(filename,'r') as theFile:
-			intermediate = json.load(theFile)
-			for key, value in intermediate.iteritems():
-				dictionary[key] = value
+	finalDictionnary = dict()
+
+	categories = ['biology', 'chemistry', 'exercise-science', 'geography-planning-environment', 'math-stats', 'physics','psychology','science-college', 'mystery']
+	for category in categories:
+		for filename in glob.glob('project3/project3/corpus/' + category + '/*.json'):
+			with open(filename,'r') as theFile:
+				intermediate = json.load(theFile)
+				for key, value in intermediate.iteritems():
+					dictionary[key] = value
+
+	for key, value in dictionary.iteritems():
+		if key in finalDictionnary:
+			continue
+		else:
+			finalDictionnary[key] = value
 
 	nonWordsRegex = re.compile('[^a-zA-Z0-9]+')
 
-	for key, value in dictionary.iteritems():
+	for key, value in finalDictionnary.iteritems():
 		for values in value:
 			for sentences in values:
 				clean = sentences.strip()

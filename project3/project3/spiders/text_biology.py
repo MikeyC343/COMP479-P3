@@ -31,7 +31,8 @@ class QuotesSpider(scrapy.Spider):
             # 'http://www.concordia.ca/artsci/math-stats.html'
             # 'http://www.concordia.ca/artsci/physics.html'
             # 'http://www.concordia.ca/artsci/psychology.html'
-            'http://www.concordia.ca/artsci/science-college.html'
+            # 'http://www.concordia.ca/artsci/science-college.html'
+            'http://www.concordia.ca/artsci/science-college/about/life-at-the-college.html'
         ]
         for url in urls:
             yield scrapy.Request(url=url, callback=self.parse)
@@ -44,12 +45,11 @@ class QuotesSpider(scrapy.Spider):
         self.urlCounter += 1
         
         if self.urlCounter < 63:
-            with open('project3/corpus/science-college/' + filename, 'wb') as theFile:
+            with open('project3/corpus/mystery/' + filename, 'wb') as theFile:
                 postingsList = {}
                 postingsList[str(response.url)] = {}
                 postingsList[str(response.url)] = (
                     response.xpath('//p/text()').extract(),
-                    response.xpath('//span/text()').extract(),
                     response.xpath('//span/text()').extract(),
                     response.xpath('//a/text()').extract(),
                     response.xpath('//h1/text()').extract(),

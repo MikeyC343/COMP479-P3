@@ -21,6 +21,7 @@ docCount = sum([len(files) for r, d, files in os.walk(corpus)])
 
 #calculate tf-idf weights - dictionary = {key:[[doc, termfreq, tf-idf], tf-idf]}
 def calculate():
+    print "Calculating tf-idf"
     with open('./index/index.json', 'r') as theFile:
         dictionnary = json.load(theFile)
         for key, value in dictionnary.iteritems():
@@ -29,11 +30,10 @@ def calculate():
             for v in value:
                 postingsList.append(v[0])
                 tfidf += v[1] * idf(postingsList, docCount)
-            #value.append(tfidf)
-            print "========"
-            print key
-            print tfidf
-            
+            value.append(tfidf)
+    print len(dictionnary)
+    with open('./index/weightedIndex.json', 'wb') as finalFile:
+        json.dump(dictionnary, finalFile) 
 
 #return the bm25 score
 #q = query term 
@@ -63,7 +63,7 @@ def termFreq(q, D):
 
 def idf(p, N):
     #p = length of postings list for querry term
-    return log( (N - len(p) + 0.5) / (len(p) + 0.5) )
+    return log( N / len(p) )
 
 def dl(D):
     doc = D.split(' ')

@@ -16,17 +16,26 @@ def preProcess(memorysize):
 	
 	postingsList = {}
 	
-	indexNumber = 00
+	finalDictionnary = dict()
 
-	for filename in glob.glob('project3/project3/corpus/science-college/*.json'):
-		with open(filename,'r') as theFile:
-			intermediate = json.load(theFile)
-			for key, value in intermediate.iteritems():
-				dictionary[key] = value
+	indexNumber = 00
+	categories = ['biology', 'chemistry', 'exercise-science', 'geography-planning-environment', 'math-stats', 'mystery', 'physics', 'psychology', 'science-college']
+	for category in categories:
+		for filename in glob.glob('project3/project3/corpus/' + category + '/*.json'):
+			with open(filename,'r') as theFile:
+				intermediate = json.load(theFile)
+				for key, value in intermediate.iteritems():
+					dictionary[key] = value
+
+	for key, value in dictionary.iteritems():
+		if key in finalDictionnary:
+			continue
+		else:
+			finalDictionnary[key] = value
 
 	nonWordsRegex = re.compile('[^a-zA-Z0-9]+')
 
-	for key, value in dictionary.iteritems():
+	for key, value in finalDictionnary.iteritems():
 		for values in value:
 			for sentences in values:
 				clean = sentences.strip()
@@ -81,7 +90,7 @@ def preProcess(memorysize):
 					else:
 						formatedIndexNumber = str(indexNumber)
 
-					with open('index/science-college-' + formatedIndexNumber + '.json', 'w') as theFile:
+					with open('index/blocks-' + formatedIndexNumber + '.json', 'w') as theFile:
 						indexNumber += 1
 						json.dump(postingsList, theFile)
 					postingsList = {}

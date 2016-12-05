@@ -8,7 +8,7 @@ def mergeBlocks():
 		#initialize empty dict
 		dictionary = {}
 		#iterates through all blocks
-		for filename in glob.glob('index/biology-*.json'):
+		for filename in glob.glob('index/blocks-*.json'):
 			with open(filename, 'r') as blocks:
 				#loads term-postingsList from blocks
 				postingsList = json.load(blocks)
